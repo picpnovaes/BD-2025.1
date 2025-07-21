@@ -1,55 +1,57 @@
--- MySQL dump 10.13  Distrib 8.0.42, for Win64 (x86_64)
---
--- Host: 127.0.0.1    Database: locadora_db
--- ------------------------------------------------------
--- Server version	9.1.0
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
---
--- Table structure for table `cliente`
---
-
-DROP TABLE IF EXISTS `cliente`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `cliente` (
-  `cpf` varchar(11) NOT NULL,
-  `nome` varchar(150) NOT NULL,
-  `data_nascimento` date DEFAULT NULL,
-  `sexo` char(1) DEFAULT NULL,
-  `endereco` varchar(255) DEFAULT NULL,
-  `numero_residencia` varchar(10) DEFAULT NULL,
-  PRIMARY KEY (`cpf`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
 --
 -- Dumping data for table `cliente`
 --
 
 LOCK TABLES `cliente` WRITE;
 /*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
-INSERT INTO `cliente` VALUES ('12345678901','Ana Silva','1980-05-15','F','Rua A, Bairro B','123'),('23456789012','Bruno Souza','1992-07-20','M','Rua C, Bairro D','45'),('34567890123','Carla Pereira','1975-01-10','F','Av. E, Bairro F','789'),('45678901234','Daniel Costa','1985-11-25','M','Rua G, Bairro H','12'),('56789012345','Elisa Martins','1990-02-28','F','Rua I, Bairro J','99'),('67890123456','Felipe Rocha','1988-09-17','M','Rua K, Bairro L','21'),('78901234567','Gabriela Lima','2000-03-05','F','Rua M, Bairro N','150'),('89012345678','Henrique Alves','1995-06-30','M','Rua O, Bairro P','7'),('90123456789','Isabela Dias','1979-12-12','F','Rua Q, Bairro R','88'),('01234567890','João Oliveira','1983-04-22','M','Rua S, Bairro T','200'),('11223344556','Karla Pinto','1981-08-08','F','Rua U, Bairro V','5'),('22334455667','Leonardo Silva','1977-10-19','M','Av. W, Bairro X','34'),('33445566778','Mariana Costa','1993-01-25','F','Rua Y, Bairro Z','67'),('44556677889','Nicolas Fernandes','1986-12-01','M','Rua AA, Bairro BB','14'),('55667788990','Olivia Ramos','1991-05-16','F','Rua CC, Bairro DD','3'),('66778899001','Paulo Souza','1984-09-09','M','Av. EE, Bairro FF','222'),('77889900112','Quésia Mendes','1997-11-23','F','Rua GG, Bairro HH','71'),('88990011223','Rafael Lima','1982-02-02','M','Rua II, Bairro JJ','18'),('99001122334','Sabrina Moreira','1990-07-07','F','Rua KK, Bairro LL','42'),('10011022334','Tiago Alves','1978-03-29','M','Rua MM, Bairro NN','56'),('21122334455','Ursula Campos','1989-10-12','F','Rua OO, Bairro PP','99'),('32233445566','Victor Rocha','1994-01-01','M','Rua QQ, Bairro RR','20'),('43344556677','Wanda Silva','1983-07-17','F','Rua SS, Bairro TT','15'),('54455667788','Xavier Mendes','1987-06-06','M','Rua UU, Bairro VV','47'),('65566778899','Yara Santos','1996-05-25','F','Rua WW, Bairro XX','9'),('76677889900','Zeca Costa','1979-04-14','M','Rua YY, Bairro ZZ','61'),('87788990011','Amanda Lima','1992-11-11','F','Av. AAA, Bairro BBB','88'),('98899001122','Bruno Fernandes','1980-12-21','M','Rua CCC, Bairro DDD','74'),('09900112233','Camila Souza','1995-08-18','F','Rua EEE, Bairro FFF','30'),('11001122334','Diego Alves','1988-02-27','M','Rua GGG, Bairro HHH','55'),('22112233445','Eliane Santos','1985-09-09','F','Rua III, Bairro JJJ','18'),('33223344556','Fabio Oliveira','1991-03-03','M','Av. KKK, Bairro LLL','11'),('44334455667','Giovana Rocha','1993-06-06','F','Rua MMM, Bairro NNN','33'),('55445566778','Hugo Mendes','1987-10-10','M','Rua OOO, Bairro PPP','7'),('66556677889','Isadora Costa','1990-01-01','F','Rua QQQ, Bairro RRR','95'),('77667788990','João Pedro','1994-04-04','M','Rua SSS, Bairro TTT','100'),('88778899001','Karina Dias','1982-07-07','F','Rua UUU, Bairro VVV','21'),('99889900112','Lucas Ramos','1989-12-12','M','Rua WWW, Bairro XXX','67'),('10990011223','Marina Silva','1995-05-05','F','Rua YYY, Bairro ZZZ','90'),('21001122334','Natan Souza','1984-08-08','M','Av. AAAA, Bairro BBBB','120'),('32112233445','Olga Fernandes','1991-11-11','F','Rua CCCC, Bairro DDDD','24'),('43223344556','Pedro Henrique','1983-02-02','M','Rua EEEE, Bairro FFFF','67'),('54334455667','Queila Lima','1990-09-09','F','Rua GGGG, Bairro HHHH','16'),('65445566778','Ricardo Santos','1985-06-06','M','Rua IIII, Bairro JJJJ','43'),('76556677889','Sandra Oliveira','1988-03-03','F','Rua KKKK, Bairro LLLL','70'),('87667788990','Tiago Fernandes','1992-07-07','M','Rua MMMM, Bairro NNNN','90'),('98778899001','Vanessa Rocha','1995-10-10','F','Rua OOOO, Bairro PPPP','32'),('19889900112','Wesley Costa','1980-01-01','M','Rua QQQQ, Bairro RRRR','55');
+INSERT INTO `cliente` VALUES 
+('12345678901','Ana Silva','1980-05-15','F','Rua A, Bairro B','123'),
+('23456789012','Bruno Souza','1992-07-20','M','Rua C, Bairro D','45'),
+('34567890123','Carla Pereira','1975-01-10','F','Av. E, Bairro F','789'),
+('45678901234','Daniel Costa','1985-11-25','M','Rua G, Bairro H','12'),
+('56789012345','Elisa Martins','1990-02-28','F','Rua I, Bairro J','99'),
+('67890123456','Felipe Rocha','1988-09-17','M','Rua K, Bairro L','21'),
+('78901234567','Gabriela Lima','2000-03-05','F','Rua M, Bairro N','150'),
+('89012345678','Henrique Alves','1995-06-30','M','Rua O, Bairro P','7'),
+('90123456789','Isabela Dias','1979-12-12','F','Rua Q, Bairro R','88'),
+('01234567890','João Oliveira','1983-04-22','M','Rua S, Bairro T','200'),
+('11223344556','Karla Pinto','1981-08-08','F','Rua U, Bairro V','5'),
+('22334455667','Leonardo Silva','1977-10-19','M','Av. W, Bairro X','34'),
+('33445566778','Mariana Costa','1993-01-25','F','Rua Y, Bairro Z','67'),
+('44556677889','Nicolas Fernandes','1986-12-01','M','Rua AA, Bairro BB','14'),
+('55667788990','Olivia Ramos','1991-05-16','F','Rua CC, Bairro DD','3'),
+('66778899001','Paulo Souza','1984-09-09','M','Av. EE, Bairro FF','222'),
+('77889900112','Quésia Mendes','1997-11-23','F','Rua GG, Bairro HH','71'),
+('88990011223','Rafael Lima','1982-02-02','M','Rua II, Bairro JJ','18'),
+('99001122334','Sabrina Moreira','1990-07-07','F','Rua KK, Bairro LL','42'),
+('10011022334','Tiago Alves','1978-03-29','M','Rua MM, Bairro NN','56'),
+('21122334455','Ursula Campos','1989-10-12','F','Rua OO, Bairro PP','99'),
+('32233445566','Victor Rocha','1994-01-01','M','Rua QQ, Bairro RR','20'),
+('43344556677','Wanda Silva','1983-07-17','F','Rua SS, Bairro TT','15'),
+('54455667788','Xavier Mendes','1987-06-06','M','Rua UU, Bairro VV','47'),
+('65566778899','Yara Santos','1996-05-25','F','Rua WW, Bairro XX','9'),
+('76677889900','Zeca Costa','1979-04-14','M','Rua YY, Bairro ZZ','61'),
+('87788990011','Amanda Lima','1992-11-11','F','Av. AAA, Bairro BBB','88'),
+('98899001122','Bruno Fernandes','1980-12-21','M','Rua CCC, Bairro DDD','74'),
+('09900112233','Camila Souza','1995-08-18','F','Rua EEE, Bairro FFF','30'),
+('11001122334','Diego Alves','1988-02-27','M','Rua GGG, Bairro HHH','55'),
+('22112233445','Eliane Santos','1985-09-09','F','Rua III, Bairro JJJ','18'),
+('33223344556','Fabio Oliveira','1991-03-03','M','Av. KKK, Bairro LLL','11'),
+('44334455667','Giovana Rocha','1993-06-06','F','Rua MMM, Bairro NNN','33'),
+('55445566778','Hugo Mendes','1987-10-10','M','Rua OOO, Bairro PPP','7'),
+('66556677889','Isadora Costa','1990-01-01','F','Rua QQQ, Bairro RRR','95'),
+('77667788990','João Pedro','1994-04-04','M','Rua SSS, Bairro TTT','100'),
+('88778899001','Karina Dias','1982-07-07','F','Rua UUU, Bairro VVV','21'),
+('99889900112','Lucas Ramos','1989-12-12','M','Rua WWW, Bairro XXX','67'),
+('10990011223','Marina Silva','1995-05-05','F','Rua YYY, Bairro ZZZ','90'),
+('21001122334','Natan Souza','1984-08-08','M','Av. AAAA, Bairro BBBB','120'),
+('32112233445','Olga Fernandes','1991-11-11','F','Rua CCCC, Bairro DDDD','24'),
+('43223344556','Pedro Henrique','1983-02-02','M','Rua EEEE, Bairro FFFF','67'),
+('54334455667','Queila Lima','1990-09-09','F','Rua GGGG, Bairro HHHH','16'),
+('65445566778','Ricardo Santos','1985-06-06','M','Rua IIII, Bairro JJJJ','43'),
+('76556677889','Sandra Oliveira','1988-03-03','F','Rua KKKK, Bairro LLLL','70'),
+('87667788990','Tiago Fernandes','1992-07-07','M','Rua MMMM, Bairro NNNN','90'),
+('98778899001','Vanessa Rocha','1995-10-10','F','Rua OOOO, Bairro PPPP','32'),
+('19889900112','Wesley Costa','1980-01-01','M','Rua QQQQ, Bairro RRRR','55');
 /*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
-
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2025-07-20 21:40:00
