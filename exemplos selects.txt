@@ -1,0 +1,97 @@
+SELECTS SIMPLES
+
+-- 1. Selecionar alugueis feitos em 2025-01-01
+SELECT * FROM aluguel WHERE data_aluguel = '2025-01-01';
+
+-- 2. Selecionar os 10 atendimentos mais recentes
+SELECT * FROM atendimento ORDER BY data_atendimento DESC LIMIT 10;
+
+-- 3. Selecionar avaliações de um cliente específico
+SELECT * FROM avaliacao WHERE cliente_cpf = '11111111111';
+
+-- 4. Selecionar clientes nascidos após 2000-01-01
+SELECT * FROM cliente WHERE data_nascimento > '2000-01-01';
+
+-- 5. Selecionar compras com valor acima de 500
+SELECT * FROM compra WHERE valor_total > 500;
+
+-- 6. Selecionar filmes com duração entre 90 e 120 minutos
+SELECT * FROM filme WHERE duracao_minutos BETWEEN 90 AND 120;
+
+-- 7. Selecionar filmes com duração inferior a 80 minutos
+SELECT * FROM filme WHERE duracao_minutos < 80;
+
+-- 8. Selecionar registros de um gênero específico
+SELECT * FROM filme_genero WHERE genero_id = 2;
+
+-- 9. Selecionar fornecedores com código acima de 50
+SELECT * FROM fornecedor WHERE codigo > 50;
+
+-- 10. Selecionar alugueis com promoção ativa (promocao_id não nulo)
+SELECT * FROM aluguel WHERE promocao_id IS NOT NULL;
+
+
+
+SELECTS COM JOIN
+
+-- 1. Alugueis com dados do cliente (nome)
+SELECT a.id, a.data_aluguel, c.nome AS cliente_nome, a.valor
+FROM aluguel a
+JOIN cliente c ON a.cliente_cpf = c.cpf;
+
+-- 2. Alugueis com dados da promoção (nome e percentual)
+SELECT a.id, a.data_aluguel, p.nome AS promocao_nome, p.percentual_desconto
+FROM aluguel a
+JOIN promocao p ON a.promocao_id = p.id;
+
+-- 3. Atendimentos de um cliente específico com nome do funcionário
+SELECT a.id, a.data_atendimento, f.nome AS funcionario_nome
+FROM atendimento a
+JOIN funcionario f ON a.funcionario_cpf = f.cpf
+WHERE a.cliente_cpf = '22222222222';
+
+-- 4. Avaliações com título do filme
+SELECT a.id, f.titulo AS filme_titulo, a.nota, a.comentario
+FROM avaliacao a
+JOIN filme f ON a.filme_codigo = f.codigo;
+
+-- 5. Avaliações com nota máxima e título do filme
+SELECT a.id, f.titulo, a.nota
+FROM avaliacao a
+JOIN filme f ON a.filme_codigo = f.codigo
+WHERE a.nota = 5;
+
+-- 6. Clientes que fizeram reservas
+SELECT DISTINCT c.nome
+FROM cliente c
+JOIN reserva r ON c.cpf = r.cliente_cpf;
+
+-- 7. Clientes com filmes reservados
+SELECT c.nome, f.titulo
+FROM cliente c
+JOIN reserva r ON c.cpf = r.cliente_cpf
+JOIN filme f ON r.filme_codigo = f.codigo;
+
+-- 8. Compras com funcionário e fornecedor
+SELECT c.id, f.nome AS funcionario_nome, fo.nome AS fornecedor_nome, c.valor_total
+FROM compra c
+JOIN funcionario f ON c.funcionario_cpf = f.cpf
+JOIN fornecedor fo ON c.fornecedor_codigo = fo.codigo;
+
+-- 9. Filmes com gênero 'Ação'
+SELECT f.titulo
+FROM filme f
+JOIN filme_genero fg ON f.codigo = fg.filme_codigo
+JOIN genero g ON fg.genero_id = g.id
+WHERE g.nome = 'Ação';
+
+-- 10. Listar gêneros associados a filmes com duração > 120 min
+SELECT f.titulo, g.nome AS genero
+FROM filme_genero fg
+JOIN filme f ON fg.filme_codigo = f.codigo
+JOIN genero g ON fg.genero_id = g.id
+WHERE f.duracao_minutos > 120;
+
+
+
+
