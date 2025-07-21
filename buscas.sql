@@ -1,103 +1,130 @@
 
-
-SELECT titulo, duracao_minutos FROM filme WHERE genero = 'Ação';
-
-
-SELECT nome, data_nascimento FROM cliente WHERE data_nascimento >= '2000-01-01' ORDER BY data_nascimento;
-
-
-SELECT id, cliente_cpf, valor FROM aluguel ORDER BY valor DESC LIMIT 5;
-
-
-SELECT id, filme_codigo, idioma FROM item WHERE formato = 'VHS';
-
-
-SELECT id, cliente_cpf, item_id, data_aluguel FROM aluguel WHERE data_devolucao IS NULL;
-
-
-SELECT cpf, nome FROM funcionario WHERE nome LIKE '%Silva%';
-
-
-SELECT DISTINCT genero FROM filme ORDER BY genero;
-
-
-SELECT id, data_compra, valor_total FROM compra WHERE valor_total BETWEEN 1000.00 AND 1500.00;
-
-
-SELECT titulo, genero FROM filme WHERE genero IN ('Romance', 'Drama');
-
-
-SELECT codigo, nome FROM fornecedor ORDER BY nome DESC;
+SELECT 
+    c.nome AS cliente,
+    f.titulo AS filme,
+    p.nome AS promocao,
+    a.data_aluguel
+FROM Aluguel AS a
+JOIN Promocao AS p ON a.promocao_id = p.id
+JOIN Cliente AS c ON a.cliente_cpf = c.cpf
+JOIN Item AS i ON a.item_id = i.id
+JOIN Filme AS f ON i.filme_codigo = f.codigo
+WHERE p.nome = 'Dia dos Namorados'
 
 
 
-
-SELECT c.nome AS nome_cliente, f.titulo AS filme_alugado, a.data_aluguel
-FROM aluguel AS a
-JOIN cliente AS c ON a.cliente_cpf = c.cpf
-JOIN item AS i ON a.item_id = i.id
-JOIN filme AS f ON i.filme_codigo = f.codigo;
-
-
-SELECT fu.nome AS funcionario, fo.nome AS fornecedor, c.data_compra, c.valor_total
-FROM compra AS c
-JOIN funcionario AS fu ON c.funcionario_cpf = fu.cpf
-JOIN fornecedor AS fo ON c.fornecedor_codigo = fo.codigo;
-
-
-SELECT f.titulo, i.formato, c.nome AS cliente, a.data_aluguel
-FROM aluguel AS a
-JOIN cliente AS c ON a.cliente_cpf = c.cpf
-JOIN item AS i ON a.item_id = i.id
-JOIN filme AS f ON i.filme_codigo = f.codigo
-WHERE a.data_devolucao IS NULL;
-
-
-SELECT f.titulo, COUNT(i.id) AS quantidade_de_copias
-FROM filme AS f
-LEFT JOIN item AS i ON f.codigo = i.filme_codigo
+SELECT
+    f.titulo
+FROM Filme AS f
+JOIN Filme_Genero AS fg ON f.codigo = fg.filme_codigo
+JOIN Genero AS g ON fg.genero_id = g.id
+WHERE g.nome IN ('Ação', 'Ficção Científica')
 GROUP BY f.titulo
-ORDER BY quantidade_de_copias DESC;
+HAVING COUNT(DISTINCT g.nome) = 2
 
 
-SELECT f.genero, SUM(a.valor) AS total_arrecadado
-FROM aluguel AS a
-JOIN item AS i ON a.item_id = i.id
-JOIN filme AS f ON i.filme_codigo = f.codigo
-GROUP BY f.genero
-ORDER BY total_arrecadado DESC;
+
+SELECT 
+    f.titulo,
+    ROUND(AVG(av.nota), 2) AS nota_media,
+    COUNT(av.id) AS total_avaliacoes
+FROM Filme AS f
+LEFT JOIN Avaliacao AS av ON f.codigo = av.filme_codigo
+GROUP BY f.titulo
+HAVING COUNT(av.id) > 1
+ORDER BY nota_media DESC
 
 
-SELECT DISTINCT c.nome
-FROM cliente AS c
-JOIN aluguel AS a ON c.cpf = a.cliente_cpf
-JOIN item AS i ON a.item_id = i.id
-WHERE i.formato = 'Blu-Ray';
+
+SELECT
+    c.nome AS cliente,
+    f.titulo AS filme_reservado,
+    r.data_reserva,
+    DATEDIFF(CURDATE(), DATE(r.data_reserva)) AS dias_de_espera
+FROM Reserva AS r
+JOIN Cliente AS c ON r.cliente_cpf = c.cpf
+JOIN Filme AS f ON r.filme_codigo = f.codigo
+WHERE r.status_reserva = 'Ativa'
+ORDER BY dias_de_espera DESC
 
 
-SELECT c.nome, ROUND(AVG(a.valor), 2) AS valor_medio_gasto
-FROM cliente AS c
-JOIN aluguel AS a ON c.cpf = a.cliente_cpf
+
+SELECT
+    f.titulo,
+    i.formato,
+    id.descricao_dano,
+    func.nome AS funcionario_responsavel,
+    id.data_ocorrencia
+FROM Item_Danificado AS id
+JOIN Item AS i ON id.item_id = i.id
+JOIN Filme AS f ON i.filme_codigo = f.codigo
+JOIN Funcionario AS func ON id.funcionario_cpf = func.cpf
+
+
+
+SELECT
+    p.nome AS promocao,
+    COUNT(a.id) AS vezes_utilizada,
+    SUM(a.valor) AS arrecadacao_bruta,
+    ROUND(SUM(a.valor * (p.percentual_desconto / 100)), 2) AS total_desconto_concedido
+FROM Aluguel AS a
+JOIN Promocao AS p ON a.promocao_id = p.id
+GROUP BY p.nome
+
+
+
+SELECT
+    'Aluguel' AS tipo_evento,
+    a.data_aluguel AS data,
+    c.nome AS responsavel,
+    CONCAT('Devolvido em: ', a.data_devolucao) AS detalhes
+FROM Aluguel AS a
+JOIN Cliente AS c ON a.cliente_cpf = c.cpf
+WHERE a.item_id = 3
+UNION ALL
+SELECT
+    'Dano Registrado' AS tipo_evento,
+    id.data_ocorrencia AS data,
+    f.nome AS responsavel,
+    id.descricao_dano AS detalhes
+FROM Item_Danificado AS id
+JOIN Funcionario AS f ON id.funcionario_cpf = f.cpf
+WHERE id.item_id = 3
+ORDER BY data
+
+
+
+SELECT
+    c.nome,
+    COUNT(DISTINCT a.id) AS total_alugueis,
+    COUNT(DISTINCT r.id) AS total_reservas,
+    COUNT(DISTINCT av.id) AS total_avaliacoes
+FROM Cliente AS c
+LEFT JOIN Aluguel AS a ON c.cpf = a.cliente_cpf
+LEFT JOIN Reserva AS r ON c.cpf = r.cliente_cpf
+LEFT JOIN Avaliacao AS av ON c.cpf = av.cliente_cpf
 GROUP BY c.nome
-ORDER BY valor_medio_gasto DESC;
+HAVING (COUNT(DISTINCT a.id) + COUNT(DISTINCT r.id) + COUNT(DISTINCT av.id)) > 5
+ORDER BY (COUNT(DISTINCT a.id) + COUNT(DISTINCT r.id) + COUNT(DISTINCT av.id)) DESC
 
 
-SELECT f.titulo
-FROM filme AS f
-LEFT JOIN item AS i ON f.codigo = i.filme_codigo
-LEFT JOIN aluguel AS a ON i.id = a.item_id
-WHERE a.id IS NULL
-GROUP BY f.titulo;
+
+SELECT
+    g.nome AS genero,
+    ROUND(AVG(av.nota), 2) AS nota_media_genero
+FROM Genero AS g
+JOIN Filme_Genero AS fg ON g.id = fg.genero_id
+JOIN Avaliaco AS av ON fg.filme_codigo = av.filme_codigo
+GROUP BY g.nome
+ORDER BY nota_media_genero DESC
 
 
-SELECT f.nome AS funcionario, c.nome AS cliente, MAX(a.data_atendimento) AS ultimo_atendimento
-FROM atendimento AS a
-JOIN funcionario AS f ON a.funcionario_cpf = f.cpf
-JOIN cliente AS c ON a.cliente_cpf = c.cpf
-GROUP BY f.nome;
 
-
-SELECT fo.nome, c.data_compra, c.valor_total
-FROM compra AS c
-JOIN fornecedor AS fo ON c.fornecedor_codigo = fo.codigo
-WHERE c.valor_total = (SELECT MAX(valor_total) FROM compra);
+SELECT DISTINCT
+    func.nome AS funcionario
+FROM Item_Danificado AS id
+JOIN Funcionario AS func ON id.funcionario_cpf = func.cpf
+JOIN Item AS i ON id.item_id = i.id
+JOIN Filme_Genero AS fg ON i.filme_codigo = fg.filme_codigo
+JOIN Genero AS g ON fg.genero_id = g.id
+WHERE g.nome = 'Aventura'
